@@ -1,11 +1,6 @@
 node	{
     def app
 
-tools
-        {
-                jdk 'openjdk_11'
-                maven 'Maven'
-        }
     environment {
         // Define environment variables
         AWS_REGION = 'ap-south-1' // Specify your AWS region
@@ -21,8 +16,6 @@ tools
     }
 
         stage("Package jar file with Maven"){
-                sh "pwd"
-                sh "ls"
                 sh "mvn clean package -DskipTests=true"
         }
 	
