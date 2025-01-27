@@ -19,7 +19,7 @@ node	{
             dir('spring-framework-petclinic'){
                 sh "pwd"
                 sh "ls"
-                sh "mvn clean package -DskipTests"
+                sh "mvn clean package -DskipTests=true"
             }
         }
 	
