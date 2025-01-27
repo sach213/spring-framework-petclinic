@@ -16,7 +16,7 @@ node	{
     }
 
         stage("Package jar file with Maven"){
-            dir('Ecommerce_POS-master/PosBilling'){
+            dir('spring-framework-petclinic'){
                 sh "mvn clean package -DskipTests"
             }
         }
