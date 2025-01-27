@@ -17,7 +17,6 @@ node	{
 
         stage("Package jar file with Maven"){
             dir('spring-framework-petclinic'){
-                sh "ll"
                 sh "pwd"
                 sh "ls"
                 sh "mvn clean package -DskipTests"
