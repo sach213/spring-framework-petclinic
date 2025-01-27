@@ -4,11 +4,11 @@ node	{
     environment {
         // Define environment variables
         AWS_REGION = 'ap-south-1' // Specify your AWS region
-        ECR_REPOSITORY = 'dev/ecommerce_pos'  // Replace with your ECR repository name
-        ECR_URI = "116981781220.dkr.ecr.ap-south-1.amazonaws.com/dev/ecommerce_pos"  // ECR URI format
+        //ECR_REPOSITORY = 'dev/ecommerce_pos'  // Replace with your ECR repository name
+        //ECR_URI = "116981781220.dkr.ecr.ap-south-1.amazonaws.com/dev/ecommerce_pos"  // ECR URI format
         IMAGE_NAME = 'pos-billing' // Docker image name
         IMAGE_TAG = 'latest' // Docker image tag
-        KUBECONFIG = '/path/to/kubeconfig' // Path to your kubeconfig for EKS
+      //  KUBECONFIG = '/path/to/kubeconfig' // Path to your kubeconfig for EKS
     }
 
     stage('Clone repository') {
