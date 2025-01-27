@@ -22,10 +22,8 @@ node	{
         }
 	
     stage('Build image with Docker') {
-        dir('Ecommerce_POS-master/PosBilling') {
             app = docker.build("pos-billing:${env.BUILD_NUMBER}")
 	    sh "docker ps"
-        }
     }
 
         stage('Login to AWS ECR') {
