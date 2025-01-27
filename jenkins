@@ -1,0 +1,84 @@
+pipeline {
+    agent any
+
+    environment {
+        // You can define any environment variables here
+        IMAGE_NAME = 'petclinic-app'
+        IMAGE_TAG = 'latest'
+        DOCKER_HUB_REPO = 'your-dockerhub-repo'  // Optional, if you need to push Docker images
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code from the repository
+                checkout scm
+            }
+        }
+
+        stage('Build with Maven') {
+            steps {
+                script {
+                    // Run Maven clean and install to build the project
+                    sh 'mvn clean install -DskipTests=true'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                script {
+                    // Run Maven tests (ensure unit tests pass)
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // If you want to build a Docker image for the app
+                    // Make sure the Dockerfile is in the root of your repo
+                    sh "docker build -t ${DOCKER_HUB_REPO}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Optional: Push Docker image to a Docker registry (e.g., Docker Hub)
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        // Docker login using Jenkins credentials
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+
+                        // Push image to Docker Hub
+                        sh "docker push ${DOCKER_HUB_REPO}/${IMAGE_NAME}:${IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Server') {
+            steps {
+                script {
+                    // Deploy to your environment (you can use SCP, SSH, etc.)
+                    // Example using SSH (make sure to set up SSH keys or credentials in Jenkins)
+                    sshagent(['your-ssh-credential-id']) {
+                        sh 'ssh your-user@your-server "docker pull ${DOCKER_HUB_REPO}/${IMAGE_NAME}:${IMAGE_TAG} && docker run -d -p 8080:8080 ${DOCKER_HUB_REPO}/${IMAGE_NAME}:${IMAGE_TAG}"'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and deployment were successful!'
+        }
+
+        failure {
+            echo 'Something went wrong with the build or deployment.'
+        }
+    }
+}
