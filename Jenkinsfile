@@ -16,11 +16,9 @@ node	{
     }
 
         stage("Package jar file with Maven"){
-            dir('spring-framework-petclinic'){
                 sh "pwd"
                 sh "ls"
                 sh "mvn clean package -DskipTests=true"
-            }
         }
 	
     stage('Build image with Docker') {
