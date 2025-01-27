@@ -1,6 +1,6 @@
 # FROM adoptopenjdk/openjdk11:alpine-slim
 FROM openjdk:17-alpine
-ADD target/Pos-0.0.1-SNAPSHOT.jar Pos-0.0.1-SNAPSHOT.jar
+ADD target/petclinic.war petclinic.war
 
 RUN apk update && apk --no-cache add curl \
     && apk add busybox-extras \
@@ -9,4 +9,4 @@ RUN apk update && apk --no-cache add curl \
     
 ENV TZ Asia/Singapore
 EXPOSE 8080 
-ENTRYPOINT ["java","-Dspring.profiles.active=dev,docker","-jar","/Pos-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=dev,docker","-war","/petclinic.war"]
